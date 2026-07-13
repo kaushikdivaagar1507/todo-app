@@ -1,13 +1,23 @@
-function Todo({ task }) {
+function Todo({ task, onDelete, onToggle , onEdit }) {
   return (
     <div className="todo">
-      <input type="checkbox" />
+      <input
+        type="checkbox"
+        checked={task.completed}
+        onChange={onToggle}
+      />
 
-      <span>{task}</span>
+      <span
+        style={{
+          textDecoration: task.completed ? "line-through" : "none",
+        }}
+      >
+        {task.text}
+      </span>
 
       <div>
-        <button>Edit</button>
-        <button>Delete</button>
+        <button onClick={onEdit}>Edit</button>
+        <button onClick={onDelete}>Delete</button>
       </div>
     </div>
   );
