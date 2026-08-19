@@ -8,11 +8,14 @@ require("dotenv").config();
 const taskRoutes = require("./routes/taskRoutes");
 
 const app = express();
+const authRoutes = require("./routes/authRoutes");
+
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use("/api/tasks", taskRoutes);
+app.use("/api/auth", authRoutes);
 
 // MongoDB Connection
 mongoose
