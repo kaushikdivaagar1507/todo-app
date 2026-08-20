@@ -290,3 +290,505 @@
   background: #667eea;
   color: white;
 }
+
+/* =========================
+   PROFILE
+========================= */
+
+.user-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.profile-button {
+  background: #667eea;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.profile-button:hover {
+  background: #5568d8;
+}
+
+.profile-container {
+  width: 100%;
+  min-height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-box {
+  width: 450px;
+  max-width: 90%;
+
+  background: white;
+
+  padding: 35px;
+
+  border-radius: 15px;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.profile-box h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #222;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.profile-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  padding: 15px;
+
+  background: #f5f6f7;
+
+  border-radius: 8px;
+}
+
+.profile-field span {
+  font-size: 13px;
+  color: #777;
+}
+
+.profile-field strong {
+  font-size: 17px;
+  color: #222;
+}
+
+.back-button {
+  width: 100%;
+
+  margin-top: 25px;
+
+  padding: 12px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  background: #667eea;
+
+  color: white;
+
+  font-size: 16px;
+
+  cursor: pointer;
+}
+
+.back-button:hover {
+  background: #5568d8;
+}
+
+/* =========================
+   SEARCH
+========================= */
+
+.search-area {
+  width: 100%;
+  margin: 15px 0 20px;
+}
+
+.search-area input {
+  width: 100%;
+  box-sizing: border-box;
+
+  padding: 12px 15px;
+
+  border: 2px solid #ddd;
+  border-radius: 8px;
+
+  font-size: 16px;
+
+  outline: none;
+
+  transition: border-color 0.2s;
+}
+
+.search-area input:focus {
+  border-color: #667eea;
+}
+
+/* ========================================
+   TODO TASK CARDS
+======================================== */
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 22px 24px;
+  margin-bottom: 16px;
+
+  background: #ffffff;
+
+  border-radius: 16px;
+
+  border-left: 5px solid #667eea;
+
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+
+  transition: all 0.25s ease;
+}
+
+
+/* Different colors for cards */
+
+.todo-item:nth-child(2) {
+  border-left-color: #22c55e;
+}
+
+.todo-item:nth-child(3) {
+  border-left-color: #f59e0b;
+}
+
+.todo-item:nth-child(4) {
+  border-left-color: #ec4899;
+}
+
+.todo-item:nth-child(5) {
+  border-left-color: #8b5cf6;
+}
+
+
+/* Hover effect */
+
+.todo-item:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+
+/* ========================================
+   LEFT SIDE
+======================================== */
+
+.todo-left {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 18px;
+
+  flex: 1;
+}
+
+
+/* Checkbox */
+
+.todo-checkbox {
+  appearance: none;
+
+  width: 24px;
+  height: 24px;
+
+  min-width: 24px;
+
+  border: 2px solid #667eea;
+
+  border-radius: 6px;
+
+  cursor: pointer;
+
+  position: relative;
+
+  margin-top: 2px;
+
+  transition: all 0.2s ease;
+}
+
+
+.todo-checkbox:hover {
+  transform: scale(1.08);
+}
+
+
+/* Checked checkbox */
+
+.todo-checkbox:checked {
+  background: #667eea;
+
+  border-color: #667eea;
+}
+
+
+.todo-checkbox:checked::after {
+  content: "✓";
+
+  position: absolute;
+
+  color: white;
+
+  font-size: 16px;
+
+  font-weight: bold;
+
+  left: 4px;
+  top: -1px;
+}
+
+
+/* ========================================
+   TASK CONTENT
+======================================== */
+
+.todo-content {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 7px;
+}
+
+
+.task-text {
+  margin: 0;
+
+  font-size: 18px;
+
+  font-weight: 600;
+
+  color: #172554;
+
+  transition: all 0.2s ease;
+}
+
+
+.task-text.done {
+  text-decoration: line-through;
+
+  color: #94a3b8;
+}
+
+
+/* Date */
+
+.task-date {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  font-size: 13px;
+
+  color: #64748b;
+}
+
+
+.task-date svg {
+  font-size: 12px;
+}
+
+
+/* ========================================
+   COMPLETED TASK
+======================================== */
+
+.todo-item.completed {
+  opacity: 0.75;
+
+  border-left-color: #94a3b8;
+}
+
+
+/* ========================================
+   ACTION BUTTONS
+======================================== */
+
+.todo-actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+}
+
+
+/* Common button style */
+
+.edit-btn,
+.delete-btn {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 10px 16px;
+
+  border-radius: 9px;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+
+  background: white;
+}
+
+
+/* Edit */
+
+.edit-btn {
+
+  border: 2px solid #667eea;
+
+  color: #667eea;
+}
+
+
+.edit-btn:hover {
+
+  background: #667eea;
+
+  color: white;
+
+  transform: translateY(-2px);
+}
+
+
+/* Delete */
+
+.delete-btn {
+
+  border: 2px solid #ef4444;
+
+  color: #ef4444;
+}
+
+
+.delete-btn:hover {
+
+  background: #ef4444;
+
+  color: white;
+
+  transform: translateY(-2px);
+}
+
+
+/* ========================================
+   SEARCH BOX
+======================================== */
+
+.search-area {
+  width: 100%;
+
+  margin: 15px 0 20px;
+}
+
+
+.search-area input {
+
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 14px 18px;
+
+  border: 2px solid #e2e8f0;
+
+  border-radius: 10px;
+
+  font-size: 16px;
+
+  outline: none;
+
+  background: white;
+
+  transition: all 0.2s ease;
+}
+
+
+.search-area input:focus {
+
+  border-color: #667eea;
+
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.12);
+}
+
+
+/* ========================================
+   EMPTY MESSAGE
+======================================== */
+
+.empty-message {
+
+  text-align: center;
+
+  padding: 40px 20px;
+
+  color: #64748b;
+
+  font-size: 16px;
+
+  background: white;
+
+  border-radius: 15px;
+
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.06);
+}
+
+
+/* ========================================
+   MOBILE RESPONSIVE
+======================================== */
+
+@media (max-width: 650px) {
+
+  .todo-item {
+
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 18px;
+
+    padding: 18px;
+  }
+
+
+  .todo-actions {
+
+    justify-content: flex-end;
+  }
+
+
+  .edit-btn,
+  .delete-btn {
+
+    flex: 1;
+
+    padding: 10px;
+  }
+
+
+  .task-text {
+
+    font-size: 16px;
+  }
+
+}

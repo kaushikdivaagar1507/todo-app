@@ -6,7 +6,7 @@ import Signup from "./pages/Signup";
 
 import Todo from "./components/Todo";
 import API from "./api/api";
-
+import Profile from "./pages/Profile";
 function App() {
 
   const [user, setUser] = useState(() => {
@@ -18,6 +18,7 @@ function App() {
   });
 
   const [showSignup, setShowSignup] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
 
   function handleLogin(userData) {
     setUser(userData);
@@ -50,19 +51,36 @@ function App() {
   }
 
   // Todo page
+  // Profile page
+if (user && showProfile) {
   return (
-    <TodoApp
+    <Profile
       user={user}
-      logout={logout}
+      goBack={() => setShowProfile(false)}
     />
   );
 }
 
+// Todo page
+return (
+  <TodoApp
+    user={user}
+    logout={logout}
+    openProfile={() => setShowProfile(true)}
+  />
+);
+}
 
-function TodoApp({ user, logout }) {
+
+function TodoApp({ user, logout , openProfile}) {
 
   const [task, setTask] = useState("");
   const [tasks, setTasks] = useState([]);
+  const [search, setSearch] = useState("");
+
+  const filteredTasks = tasks.filter((item) =>
+  item.text.toLowerCase().includes(search.toLowerCase())
+);
 
   useEffect(() => {
     fetchTasks();
@@ -174,24 +192,35 @@ function TodoApp({ user, logout }) {
 
       <div className="top-bar">
 
-        <div>
+  <div>
 
-          <h1>📝 My ToDo List</h1>
+    <h1>📝 My ToDo List</h1>
 
-          <p>
-            Welcome, {user.name} 👋
-          </p>
+    <p>
+      Welcome, {user.name} 👋
+    </p>
 
-        </div>
+  </div>
 
-        <button
-          className="logout-button"
-          onClick={logout}
-        >
-          Logout
-        </button>
+  <div className="user-actions">
 
-      </div>
+    <button
+      className="profile-button"
+      onClick={openProfile}
+    >
+      👤 Profile
+    </button>
+
+    <button
+      className="logout-button"
+      onClick={logout}
+    >
+      Logout
+    </button>
+
+  </div>
+
+</div>
 
 
       <div className="input-area">
@@ -215,38 +244,53 @@ function TodoApp({ user, logout }) {
         </button>
 
       </div>
+      <div className="search-area">
+
+  <input
+    type="text"
+    placeholder="🔍 Search tasks..."
+    value={search}
+    onChange={(e) => setSearch(e.target.value)}
+  />
+
+</div>
 
 
-      {tasks.length === 0 ? (
+      {filteredTasks.length === 0 ? (
 
-        <p className="empty-message">
-          📝 No tasks yet. Add your first task!
-        </p>
+  <p className="empty-message">
 
-      ) : (
+    {search
+      ? "🔍 No tasks found."
+      : "📝 No tasks yet. Add your first task!"
+    }
 
-        tasks.map((item) => (
+  </p>
 
-          <Todo
-            key={item._id}
-            task={item}
+) : (
 
-            onDelete={() =>
-              deleteTask(item._id)
-            }
+  filteredTasks.map((item) => (
 
-            onToggle={() =>
-              toggleTask(item)
-            }
+    <Todo
+      key={item._id}
+      task={item}
 
-            onEdit={() =>
-              editTask(item)
-            }
-          />
+      onDelete={() =>
+        deleteTask(item._id)
+      }
 
-        ))
+      onToggle={() =>
+        toggleTask(item)
+      }
 
-      )}
+      onEdit={() =>
+        editTask(item)
+      }
+    />
+
+  ))
+
+)}
 
     </div>
   );
