@@ -792,3 +792,92 @@
   }
 
 }
+
+/* ========================================
+   TASK FILTERS
+======================================== */
+
+.filter-area {
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin: 10px 0 25px;
+}
+
+
+.filter-btn {
+  padding: 10px 20px;
+
+  border: 2px solid #e2e8f0;
+
+  border-radius: 20px;
+
+  background: white;
+
+  color: #64748b;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+
+.filter-btn:hover {
+  border-color: #667eea;
+
+  color: #667eea;
+
+  transform: translateY(-1px);
+}
+
+
+.filter-btn.active {
+  background: #667eea;
+
+  border-color: #667eea;
+
+  color: white;
+
+  box-shadow: 0 4px 10px rgba(102, 126, 234, 0.25);
+}
+
+
+/* Mobile */
+
+@media (max-width: 650px) {
+
+  .filter-area {
+    width: 100%;
+  }
+
+  .filter-btn {
+    flex: 1;
+
+    padding: 9px 10px;
+  }
+
+}
+/* ========================================
+   TASK COUNT
+======================================== */
+
+.task-count {
+  text-align: center;
+
+  margin: -10px 0 20px;
+
+  color: #64748b;
+
+  font-size: 14px;
+
+  font-weight: 500;
+}

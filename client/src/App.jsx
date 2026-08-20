@@ -77,10 +77,23 @@ function TodoApp({ user, logout , openProfile}) {
   const [task, setTask] = useState("");
   const [tasks, setTasks] = useState([]);
   const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState("all");
 
-  const filteredTasks = tasks.filter((item) =>
-  item.text.toLowerCase().includes(search.toLowerCase())
-);
+  const filteredTasks = tasks.filter((item) => {
+
+  const matchesSearch = item.text
+    .toLowerCase()
+    .includes(search.toLowerCase());
+
+  const matchesFilter =
+    filter === "all"
+      ? true
+      : filter === "active"
+        ? !item.completed
+        : item.completed;
+
+  return matchesSearch && matchesFilter;
+});
 
   useEffect(() => {
     fetchTasks();
@@ -252,6 +265,37 @@ function TodoApp({ user, logout , openProfile}) {
     value={search}
     onChange={(e) => setSearch(e.target.value)}
   />
+
+</div>
+
+  <div className="filter-area">
+
+    <button
+      className={filter === "all" ? "filter-btn active" : "filter-btn"}
+      onClick={() => setFilter("all")}
+    >
+      All
+    </button>
+
+    <button
+      className={filter === "active" ? "filter-btn active" : "filter-btn"}
+      onClick={() => setFilter("active")}
+    >
+      Active
+    </button>
+
+    <button
+      className={filter === "completed" ? "filter-btn active" : "filter-btn"}
+      onClick={() => setFilter("completed")}
+    >
+      Completed
+    </button>
+
+  </div>
+<div className="task-count">
+
+  {filteredTasks.length}{" "}
+  {filteredTasks.length === 1 ? "task" : "tasks"}
 
 </div>
 
