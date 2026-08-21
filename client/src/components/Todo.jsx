@@ -1,33 +1,98 @@
-import { FaPen, FaTrash, FaClock } from "react-icons/fa";
+import {
+  FaEdit,
+  FaTrash,
+  FaCheck,
+  FaClock,
+} from "react-icons/fa";
 
-function Todo({ task, onDelete, onToggle, onEdit }) {
+function Todo({
+  task,
+  onDelete,
+  onToggle,
+  onEdit,
+}) {
 
-  const formattedDate = new Date(task.createdAt).toLocaleString("en-IN", {
-    dateStyle: "medium",
-    timeStyle: "short",
-  });
+  // Priority settings
+  const priorityInfo = {
+    high: {
+      label: "🔴 High Priority",
+      className: "high",
+    },
+
+    medium: {
+      label: "🟡 Medium Priority",
+      className: "medium",
+    },
+
+    low: {
+      label: "🟢 Low Priority",
+      className: "low",
+    },
+  };
+
+  // Old tasks may not have priority
+  const currentPriority =
+    priorityInfo[task.priority] || priorityInfo.medium;
+
+
+  // Format date
+  const formattedDate = task.createdAt
+    ? new Date(task.createdAt).toLocaleDateString(
+        "en-GB",
+        {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        }
+      )
+    : "";
+
 
   return (
-    <div className={`todo-item ${task.completed ? "completed" : ""}`}>
+    <div
+      className={`todo-item ${
+        task.completed ? "completed" : ""
+      }`}
+    >
 
-      {/* Left side */}
-      <div className="todo-left">
+      {/* Checkbox */}
+      <button
+        className={`todo-checkbox ${
+          task.completed ? "checked" : ""
+        }`}
+        onClick={onToggle}
+      >
+        {task.completed && <FaCheck />}
+      </button>
 
-        <input
-          type="checkbox"
-          checked={task.completed}
-          onChange={onToggle}
-          className="todo-checkbox"
-        />
 
-        <div className="todo-content">
+      {/* Task content */}
+      <div className="todo-content">
 
-          <p className={`task-text ${task.completed ? "done" : ""}`}>
-            {task.text}
-          </p>
+        {/* Task text */}
+        <p
+          className={`task-text ${
+            task.completed ? "done" : ""
+          }`}
+        >
+          {task.text}
+        </p>
 
-          <span className="task-date">
-            <FaClock />
+
+        {/* Priority */}
+        <span
+          className={`priority-badge ${currentPriority.className}`}
+        >
+          {currentPriority.label}
+        </span>
+
+
+        {/* Date */}
+        <div className="task-date">
+
+          <FaClock />
+
+          <span>
             {formattedDate}
           </span>
 
@@ -35,19 +100,21 @@ function Todo({ task, onDelete, onToggle, onEdit }) {
 
       </div>
 
-      {/* Right side */}
+
+      {/* Buttons */}
       <div className="todo-actions">
 
         <button
-          className="edit-btn"
+          className="edit-button"
           onClick={onEdit}
         >
-          <FaPen />
+          <FaEdit />
           Edit
         </button>
 
+
         <button
-          className="delete-btn"
+          className="delete-button"
           onClick={onDelete}
         >
           <FaTrash />

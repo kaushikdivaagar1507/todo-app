@@ -7,14 +7,12 @@ import Signup from "./pages/Signup";
 import Todo from "./components/Todo";
 import API from "./api/api";
 import Profile from "./pages/Profile";
-function App() {
 
+function App() {
   const [user, setUser] = useState(() => {
     const savedUser = localStorage.getItem("user");
 
-    return savedUser
-      ? JSON.parse(savedUser)
-      : null;
+    return savedUser ? JSON.parse(savedUser) : null;
   });
 
   const [showSignup, setShowSignup] = useState(false);
@@ -50,56 +48,71 @@ function App() {
     );
   }
 
-  // Todo page
   // Profile page
-if (user && showProfile) {
+  if (user && showProfile) {
+    return (
+      <Profile
+        user={user}
+        goBack={() => setShowProfile(false)}
+      />
+    );
+  }
+
+  // Todo page
   return (
-    <Profile
+    <TodoApp
       user={user}
-      goBack={() => setShowProfile(false)}
+      logout={logout}
+      openProfile={() => setShowProfile(true)}
     />
   );
 }
 
-// Todo page
-return (
-  <TodoApp
-    user={user}
-    logout={logout}
-    openProfile={() => setShowProfile(true)}
-  />
-);
-}
 
-
-function TodoApp({ user, logout , openProfile}) {
+function TodoApp({ user, logout, openProfile }) {
 
   const [task, setTask] = useState("");
   const [tasks, setTasks] = useState([]);
+
   const [search, setSearch] = useState("");
+
   const [filter, setFilter] = useState("all");
+
+  const [priority, setPriority] = useState("medium");
+
+
+  // ========================================
+  // FILTER TASKS
+  // ========================================
 
   const filteredTasks = tasks.filter((item) => {
 
-  const matchesSearch = item.text
-    .toLowerCase()
-    .includes(search.toLowerCase());
+    const matchesSearch = item.text
+      .toLowerCase()
+      .includes(search.toLowerCase());
 
-  const matchesFilter =
-    filter === "all"
-      ? true
-      : filter === "active"
-        ? !item.completed
-        : item.completed;
+    const matchesFilter =
+      filter === "all"
+        ? true
+        : filter === "active"
+          ? !item.completed
+          : item.completed;
 
-  return matchesSearch && matchesFilter;
-});
+    return matchesSearch && matchesFilter;
+  });
+
+
+  // ========================================
+  // FETCH TASKS
+  // ========================================
 
   useEffect(() => {
     fetchTasks();
   }, []);
 
+
   async function fetchTasks() {
+
     try {
 
       const response = await API.get("/");
@@ -117,6 +130,10 @@ function TodoApp({ user, logout , openProfile}) {
   }
 
 
+  // ========================================
+  // ADD TASK
+  // ========================================
+
   async function addTask() {
 
     if (task.trim() === "") return;
@@ -125,17 +142,25 @@ function TodoApp({ user, logout , openProfile}) {
 
       await API.post("/", {
         text: task,
+        priority: priority,
       });
 
       setTask("");
 
+      setPriority("medium");
+
       fetchTasks();
 
     } catch (error) {
-      console.error(error);
+
+      console.error("Add task error:", error);
     }
   }
 
+
+  // ========================================
+  // DELETE TASK
+  // ========================================
 
   async function deleteTask(id) {
 
@@ -146,10 +171,15 @@ function TodoApp({ user, logout , openProfile}) {
       fetchTasks();
 
     } catch (error) {
-      console.error(error);
+
+      console.error("Delete task error:", error);
     }
   }
 
+
+  // ========================================
+  // TOGGLE TASK
+  // ========================================
 
   async function toggleTask(task) {
 
@@ -161,15 +191,22 @@ function TodoApp({ user, logout , openProfile}) {
 
         completed: !task.completed,
 
+        priority: task.priority || "medium",
+
       });
 
       fetchTasks();
 
     } catch (error) {
-      console.error(error);
+
+      console.error("Toggle task error:", error);
     }
   }
 
+
+  // ========================================
+  // EDIT TASK
+  // ========================================
 
   async function editTask(task) {
 
@@ -190,51 +227,68 @@ function TodoApp({ user, logout , openProfile}) {
 
         completed: task.completed,
 
+        priority: task.priority || "medium",
+
       });
 
       fetchTasks();
 
     } catch (error) {
-      console.error(error);
+
+      console.error("Edit task error:", error);
     }
   }
 
 
+  // ========================================
+  // UI
+  // ========================================
+
   return (
     <div className="container">
 
+      {/* ================================
+          TOP BAR
+      ================================= */}
+
       <div className="top-bar">
 
-  <div>
+        <div>
 
-    <h1>📝 My ToDo List</h1>
+          <h1>📝 My ToDo List</h1>
 
-    <p>
-      Welcome, {user.name} 👋
-    </p>
+          <p>
+            Welcome, {user.name} 👋
+          </p>
 
-  </div>
+        </div>
 
-  <div className="user-actions">
 
-    <button
-      className="profile-button"
-      onClick={openProfile}
-    >
-      👤 Profile
-    </button>
+        <div className="user-actions">
 
-    <button
-      className="logout-button"
-      onClick={logout}
-    >
-      Logout
-    </button>
+          <button
+            className="profile-button"
+            onClick={openProfile}
+          >
+            👤 Profile
+          </button>
 
-  </div>
 
-</div>
+          <button
+            className="logout-button"
+            onClick={logout}
+          >
+            Logout
+          </button>
 
+        </div>
+
+      </div>
+
+
+      {/* ================================
+          ADD TASK
+      ================================= */}
 
       <div className="input-area">
 
@@ -252,89 +306,155 @@ function TodoApp({ user, logout , openProfile}) {
           }}
         />
 
+
+        <select
+          value={priority}
+          onChange={(e) =>
+            setPriority(e.target.value)
+          }
+          className="priority-select"
+        >
+
+          <option value="high">
+            🔴 High
+          </option>
+
+          <option value="medium">
+            🟡 Medium
+          </option>
+
+          <option value="low">
+            🟢 Low
+          </option>
+
+        </select>
+
+
         <button onClick={addTask}>
           Add
         </button>
 
       </div>
+
+
+      {/* ================================
+          SEARCH
+      ================================= */}
+
       <div className="search-area">
 
-  <input
-    type="text"
-    placeholder="🔍 Search tasks..."
-    value={search}
-    onChange={(e) => setSearch(e.target.value)}
-  />
+        <input
+          type="text"
+          placeholder="🔍 Search tasks..."
+          value={search}
+          onChange={(e) =>
+            setSearch(e.target.value)
+          }
+        />
 
-</div>
+      </div>
 
-  <div className="filter-area">
 
-    <button
-      className={filter === "all" ? "filter-btn active" : "filter-btn"}
-      onClick={() => setFilter("all")}
-    >
-      All
-    </button>
+      {/* ================================
+          FILTER BUTTONS
+      ================================= */}
 
-    <button
-      className={filter === "active" ? "filter-btn active" : "filter-btn"}
-      onClick={() => setFilter("active")}
-    >
-      Active
-    </button>
+      <div className="filter-area">
 
-    <button
-      className={filter === "completed" ? "filter-btn active" : "filter-btn"}
-      onClick={() => setFilter("completed")}
-    >
-      Completed
-    </button>
+        <button
+          className={
+            filter === "all"
+              ? "filter-btn active"
+              : "filter-btn"
+          }
+          onClick={() => setFilter("all")}
+        >
+          All
+        </button>
 
-  </div>
-<div className="task-count">
 
-  {filteredTasks.length}{" "}
-  {filteredTasks.length === 1 ? "task" : "tasks"}
+        <button
+          className={
+            filter === "active"
+              ? "filter-btn active"
+              : "filter-btn"
+          }
+          onClick={() => setFilter("active")}
+        >
+          Active
+        </button>
 
-</div>
 
+        <button
+          className={
+            filter === "completed"
+              ? "filter-btn active"
+              : "filter-btn"
+          }
+          onClick={() =>
+            setFilter("completed")
+          }
+        >
+          Completed
+        </button>
+
+      </div>
+
+
+      {/* ================================
+          TASK COUNT
+      ================================= */}
+
+      <div className="task-count">
+
+        {filteredTasks.length}{" "}
+
+        {filteredTasks.length === 1
+          ? "task"
+          : "tasks"}
+
+      </div>
+
+
+      {/* ================================
+          TASK LIST
+      ================================= */}
 
       {filteredTasks.length === 0 ? (
 
-  <p className="empty-message">
+        <p className="empty-message">
 
-    {search
-      ? "🔍 No tasks found."
-      : "📝 No tasks yet. Add your first task!"
-    }
+          {search
+            ? "🔍 No tasks found."
+            : "📝 No tasks yet. Add your first task!"
+          }
 
-  </p>
+        </p>
 
-) : (
+      ) : (
 
-  filteredTasks.map((item) => (
+        filteredTasks.map((item) => (
 
-    <Todo
-      key={item._id}
-      task={item}
+          <Todo
+            key={item._id}
+            task={item}
 
-      onDelete={() =>
-        deleteTask(item._id)
-      }
+            onDelete={() =>
+              deleteTask(item._id)
+            }
 
-      onToggle={() =>
-        toggleTask(item)
-      }
+            onToggle={() =>
+              toggleTask(item)
+            }
 
-      onEdit={() =>
-        editTask(item)
-      }
-    />
+            onEdit={() =>
+              editTask(item)
+            }
+          />
 
-  ))
+        ))
 
-)}
+      )}
 
     </div>
   );

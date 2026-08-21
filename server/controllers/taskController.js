@@ -5,7 +5,7 @@ const getTasks = async (req, res) => {
   try {
     const tasks = await Task.find({
       user: req.user.id,
-    });
+    }).sort({ createdAt: -1 });
 
     res.json(tasks);
   } catch (error) {
@@ -15,11 +15,13 @@ const getTasks = async (req, res) => {
   }
 };
 
+
 // CREATE task
 const createTask = async (req, res) => {
   try {
     const task = new Task({
       text: req.body.text,
+      priority: req.body.priority || "medium",
       user: req.user.id,
     });
 
@@ -32,6 +34,7 @@ const createTask = async (req, res) => {
     });
   }
 };
+
 
 // DELETE task
 const deleteTask = async (req, res) => {
@@ -59,6 +62,7 @@ const deleteTask = async (req, res) => {
   }
 };
 
+
 // UPDATE task
 const updateTask = async (req, res) => {
   try {
@@ -76,6 +80,11 @@ const updateTask = async (req, res) => {
     task.text = req.body.text;
     task.completed = req.body.completed;
 
+    // Update priority if provided
+    if (req.body.priority) {
+      task.priority = req.body.priority;
+    }
+
     const updatedTask = await task.save();
 
     res.json(updatedTask);
@@ -85,6 +94,7 @@ const updateTask = async (req, res) => {
     });
   }
 };
+
 
 module.exports = {
   getTasks,
