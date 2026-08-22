@@ -10,7 +10,7 @@ import Profile from "./pages/Profile";
 
 function App() {
   const [user, setUser] = useState(() => {
-    const savedUser = localStorage.getItem("user");
+    const savedUser = sessionStorage.getItem("user");
 
     return savedUser ? JSON.parse(savedUser) : null;
   });
@@ -23,8 +23,8 @@ function App() {
   }
 
   function logout() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("user");
 
     setUser(null);
   }
