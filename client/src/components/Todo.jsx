@@ -3,6 +3,7 @@ import {
   FaTrash,
   FaCheck,
   FaClock,
+  FaCalendarAlt,
 } from "react-icons/fa";
 
 function Todo({
@@ -12,7 +13,10 @@ function Todo({
   onEdit,
 }) {
 
-  // Priority settings
+  // ========================================
+  // PRIORITY
+  // ========================================
+
   const priorityInfo = {
     high: {
       label: "🔴 High Priority",
@@ -30,13 +34,16 @@ function Todo({
     },
   };
 
-  // Old tasks may not have priority
   const currentPriority =
-    priorityInfo[task.priority] || priorityInfo.medium;
+    priorityInfo[task.priority] ||
+    priorityInfo.medium;
 
 
-  // Format date
-  const formattedDate = task.createdAt
+  // ========================================
+  // CREATED DATE
+  // ========================================
+
+  const formattedCreatedDate = task.createdAt
     ? new Date(task.createdAt).toLocaleDateString(
         "en-GB",
         {
@@ -48,6 +55,22 @@ function Todo({
     : "";
 
 
+  // ========================================
+  // DUE DATE
+  // ========================================
+
+  const formattedDueDate = task.dueDate
+    ? new Date(task.dueDate).toLocaleDateString(
+        "en-GB",
+        {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        }
+      )
+    : null;
+
+
   return (
     <div
       className={`todo-item ${
@@ -55,7 +78,10 @@ function Todo({
       }`}
     >
 
-      {/* Checkbox */}
+      {/* ========================================
+          CHECKBOX
+      ======================================== */}
+
       <button
         className={`todo-checkbox ${
           task.completed ? "checked" : ""
@@ -66,10 +92,14 @@ function Todo({
       </button>
 
 
-      {/* Task content */}
+      {/* ========================================
+          TASK CONTENT
+      ======================================== */}
+
       <div className="todo-content">
 
-        {/* Task text */}
+        {/* Task name */}
+
         <p
           className={`task-text ${
             task.completed ? "done" : ""
@@ -80,6 +110,7 @@ function Todo({
 
 
         {/* Priority */}
+
         <span
           className={`priority-badge ${currentPriority.className}`}
         >
@@ -87,13 +118,33 @@ function Todo({
         </span>
 
 
-        {/* Date */}
+        {/* ========================================
+            DUE DATE
+        ======================================== */}
+
+        {formattedDueDate && (
+          <div className="due-date-display">
+
+            <FaCalendarAlt />
+
+            <span>
+              Due: {formattedDueDate}
+            </span>
+
+          </div>
+        )}
+
+
+        {/* ========================================
+            CREATED DATE
+        ======================================== */}
+
         <div className="task-date">
 
           <FaClock />
 
           <span>
-            {formattedDate}
+            {formattedCreatedDate}
           </span>
 
         </div>
@@ -101,7 +152,10 @@ function Todo({
       </div>
 
 
-      {/* Buttons */}
+      {/* ========================================
+          ACTION BUTTONS
+      ======================================== */}
+
       <div className="todo-actions">
 
         <button

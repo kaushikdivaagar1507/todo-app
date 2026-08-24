@@ -1015,3 +1015,66 @@
 
   border: 1px solid #bbf7d0;
 }
+
+/* ========================================
+   DUE DATE INPUT
+======================================== */
+
+.due-date-input {
+  padding: 12px 10px;
+
+  border: 2px solid #e2e8f0;
+
+  border-radius: 9px;
+
+  background: white;
+
+  color: #334155;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  outline: none;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.due-date-input:focus {
+  border-color: #667eea;
+}
+
+/* ========================================
+   DUE DATE DISPLAY
+======================================== */
+
+.due-date-display {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  width: fit-content;
+
+  margin-top: 5px;
+  margin-bottom: 5px;
+
+  padding: 5px 10px;
+
+  border-radius: 20px;
+
+  background: #eef2ff;
+
+  color: #4f46e5;
+
+  border: 1px solid #c7d2fe;
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+.due-date-display svg {
+  font-size: 12px;
+}

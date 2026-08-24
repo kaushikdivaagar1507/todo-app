@@ -66,8 +66,10 @@ const deleteTask = async (req, res) => {
 // UPDATE task
 const updateTask = async (req, res) => {
   try {
-    const task = await Task.findOne({
-      _id: req.params.id,
+    const task = new Task({
+      text: req.body.text,
+      priority: req.body.priority || "medium",
+      dueDate: req.body.dueDate || null,
       user: req.user.id,
     });
 
@@ -79,6 +81,8 @@ const updateTask = async (req, res) => {
 
     task.text = req.body.text;
     task.completed = req.body.completed;
+    task.priority = req.body.priority || "medium";
+    task.dueDate = req.body.dueDate || null;
 
     // Update priority if provided
     if (req.body.priority) {

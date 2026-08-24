@@ -79,6 +79,7 @@ function TodoApp({ user, logout, openProfile }) {
   const [filter, setFilter] = useState("all");
 
   const [priority, setPriority] = useState("medium");
+  const [dueDate, setDueDate] = useState("");
 
 
   // ========================================
@@ -143,12 +144,13 @@ function TodoApp({ user, logout, openProfile }) {
       await API.post("/", {
         text: task,
         priority: priority,
+        dueDate: dueDate || null,
       });
 
       setTask("");
 
       setPriority("medium");
-
+      setDueDate("");
       fetchTasks();
 
     } catch (error) {
@@ -182,23 +184,16 @@ function TodoApp({ user, logout, openProfile }) {
   // ========================================
 
   async function toggleTask(task) {
-
     try {
-
       await API.put(`/${task._id}`, {
-
         text: task.text,
-
         completed: !task.completed,
-
         priority: task.priority || "medium",
-
+        dueDate: task.dueDate || null,
       });
 
       fetchTasks();
-
     } catch (error) {
-
       console.error("Toggle task error:", error);
     }
   }
@@ -209,37 +204,25 @@ function TodoApp({ user, logout, openProfile }) {
   // ========================================
 
   async function editTask(task) {
-
-    const newText = prompt(
-      "Edit task:",
-      task.text
-    );
+    const newText = prompt("Edit task:", task.text);
 
     if (newText === null) return;
 
     if (newText.trim() === "") return;
 
     try {
-
       await API.put(`/${task._id}`, {
-
         text: newText,
-
         completed: task.completed,
-
         priority: task.priority || "medium",
-
+        dueDate: task.dueDate || null,
       });
 
       fetchTasks();
-
     } catch (error) {
-
       console.error("Edit task error:", error);
     }
   }
-
-
   // ========================================
   // UI
   // ========================================
@@ -305,7 +288,12 @@ function TodoApp({ user, logout, openProfile }) {
 
           }}
         />
-
+        <input
+            type="date"
+            value={dueDate}
+            onChange={(e) => setDueDate(e.target.value)}
+            className="due-date-input"
+          />
 
         <select
           value={priority}
@@ -314,7 +302,7 @@ function TodoApp({ user, logout, openProfile }) {
           }
           className="priority-select"
         >
-
+          
           <option value="high">
             🔴 High
           </option>
