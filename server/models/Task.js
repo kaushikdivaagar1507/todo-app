@@ -12,10 +12,16 @@ const taskSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-     priority: {
+
+    priority: {
       type: String,
       enum: ["low", "medium", "high"],
       default: "medium",
+    },
+
+    dueDate: {
+      type: Date,
+      default: null,
     },
 
     user: {
@@ -24,6 +30,7 @@ const taskSchema = new mongoose.Schema(
       required: true,
     },
   },
+
   {
     timestamps: true,
   }
